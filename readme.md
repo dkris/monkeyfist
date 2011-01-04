@@ -164,27 +164,67 @@ selectively override those defaults? That's pretty easy too.
 
 Now this:
 
-1. the really good code
+1. **the really good code**
 2. myAwesomeLiveEvents()
-3. extra special doc ready code
+3. **extra special doc ready code**
 4. myAwesomeBindEvents()
+
+When setting `params.greed = true`, the default callbacks **are not
+fired**.
+
+## That's pretty cool, but what else can it do?
+
+Since MonkeyFist is a micro-framework, so it's feature set it pretty small.
+But it does have methods other than `initialize()`.
+
+`MF.constr()` is a factory for producing callback chains. The first time
+you call constr(), you can pass it as many functions as you want, and
+these become the base for your callback chain.
+
+    var m = MF.constr( yourRadFunction, anotherCoolFunction );
+    m();
+
+Executes the arguements in order and stores the base callback in `m`.
+You can tack on an ad hoc callback onto this really easily.
+
+    m( someOtherFunction );
+
+That will execute the first 2 functions, then `someOtherFunction()`.
+
+If you need to store another callback permanently, just rebuild it with
+`MF.constr()`.
+
+    m = MF.constr( m, someOtherFunction );
+
+Now, whenever you invoke `m()`, it will execute the original contents
+_and_ the additional callback:
+
+    yourRadFunction(); anotherCoolFunction(); someOtherFunction();
+
 
 ## And there's more on the way!
 
 ## Tests
 
 If you want to pull this down and run the tests, you'll need a version
-of ruby and rubygems that support [Bundler](http://gembundler.com/). Once you've got that,
+of ruby and rubygems that support [Bundler](http://gembundler.com/). I
+also highly recommend creating a gemset with [rvm](http://rvm.beginrescueend.com/) to isolate the dependencies from your global gemset.
+
+Once you've got that, just run
 
     gem install bundle
     bundle install
 
 to install all dependencies ([Jasmine](https://github.com/pivotal/jasmine), [evergreen](https://github.com/jnicklas/evergreen)).
 
-To run the tests, use
+To run the test suite, use
 
     evergreen run
 
+If you're not into installing anything to see the tests run, there's a
+concurrent [Qunit](http://docs.jquery.com/Qunit) test suit in the tests directory. All you need for
+that is a web browser.
+
 ### License
 
-It's MIT, yo
+It's MIT, yo.
