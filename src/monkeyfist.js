@@ -20,8 +20,8 @@
       },
       // ##MF.constr()
       // Creates a constructor that returns a callback chain for
-      // with any functions passed as arguments. If the last argument
-      // passed is an object, constr() will pass that to each function.
+      // with any functions passed as arguments. If any of the arguments have a params object, that 
+      // will passed to each function.
       constr: function() {
         var args_orig = slice.call(arguments);
 

@@ -1,0 +1,187 @@
+<!DOCTYPE html>  <html> <head>   <title>test.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               test.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Make sure that jQuery and our 2 MF namespaces exist</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;Basic requirements&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">expect</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+  <span class="nx">ok</span><span class="p">(</span> <span class="nx">$</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">);</span>
+  <span class="nx">ok</span><span class="p">(</span> <span class="nx">MF</span><span class="p">,</span> <span class="s2">&quot;MF&quot;</span><span class="p">);</span>
+  <span class="nx">ok</span><span class="p">(</span> <span class="nx">MonkeyFist</span><span class="p">,</span> <span class="s2">&quot;MonkeyFist&quot;</span><span class="p">);</span>
+<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Confirm that MF is a global and contains all the right stuff</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">test</span><span class="p">(</span><span class="s2">&quot;MF core&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">expect</span><span class="p">(</span> <span class="mi">4</span> <span class="p">);</span>
+  <span class="nx">ok</span><span class="p">(</span> <span class="nb">window</span><span class="p">.</span><span class="nx">MF</span><span class="p">,</span> <span class="s2">&quot;MF should be attached to window&quot;</span><span class="p">);</span>
+  <span class="nx">equals</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">MF</span><span class="p">,</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;MF should be an object&quot;</span><span class="p">);</span>
+  <span class="nx">equals</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;MF.constr() should be a function&quot;</span><span class="p">);</span>
+  <span class="nx">equals</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">initialize</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;MF.initializer() should be a function&quot;</span><span class="p">);</span>
+<span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Test the Constr Method for building callback chains</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MF.constr()&quot;</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">m</span><span class="p">,</span>
+      <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Foo will keep track of callback execution</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">foo</span> <span class="o">=</span> <span class="p">[],</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>This is a basic function to be used as an argument in MF.constr()</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">arg</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">bar</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>This is a reset for our global vars</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="kd">function</span> <span class="nx">constrTearDown</span><span class="p">(){</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">foo</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="p">}</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;Basic requirements&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="k">typeof</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="kd">function</span><span class="p">(){}</span> <span class="p">),</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span> <span class="s2">&quot;constr should return a function&quot;</span><span class="p">);</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should execute a callback chain&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">arg</span><span class="p">,</span> <span class="nx">arg</span> <span class="p">);</span>
+    <span class="nx">m</span><span class="p">();</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">3</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;each callback should be executed once&quot;</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;foo[0] should equal 1&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;foo[1] should equal 2&quot;</span><span class="p">);</span>
+
+    <span class="nx">constrTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should allow for recursion&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">arg</span> <span class="p">);</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">arg</span> <span class="p">);</span>
+
+    <span class="nx">m</span><span class="p">();</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">3</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;each callback should be executed once&quot;</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;foo[0] should equal 1&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;foo[1] should equal 2&quot;</span><span class="p">);</span>
+
+    <span class="nx">constrTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should continue taking arguments&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">arg</span> <span class="p">);</span>
+    <span class="nx">m</span><span class="p">(</span> <span class="nx">arg</span><span class="p">,</span> <span class="nx">arg</span> <span class="p">);</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">2</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;each callback should be executed once&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;foo[2] should equal 3&quot;</span><span class="p">);</span>
+
+    <span class="nx">constrTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should work w/o new&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">arg</span><span class="p">,</span> <span class="nx">arg</span> <span class="p">);</span>
+    <span class="nx">m</span><span class="p">();</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">3</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;each callback should be executed once&quot;</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;foo[0] should equal 1&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;foo[1] should equal 2&quot;</span><span class="p">);</span>
+
+    <span class="nx">constrTearDown</span><span class="p">();</span>
+
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should ignore callbacks that aren&#39;t functions&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">arg</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="mi">9001</span> <span class="p">);</span>
+
+    <span class="nx">m</span><span class="p">();</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">2</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;only one callback should have fired&quot;</span><span class="p">);</span>
+
+    <span class="nx">foo</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="nx">m</span><span class="p">(</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="mi">9001</span><span class="p">,</span> <span class="nx">arg</span><span class="p">,</span> <span class="p">[]</span> <span class="p">);</span>
+
+    <span class="nx">equals</span><span class="p">(</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;only two callbacks should have fired&quot;</span><span class="p">);</span>
+
+    <span class="nx">constrTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should honor contextual data&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">arg</span> <span class="p">);</span>
+    <span class="nx">m</span><span class="p">.</span><span class="nx">call</span><span class="p">({</span> <span class="nx">bar</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;normal functionality is overridden&quot;</span><span class="p">);</span>
+    <span class="nx">constrTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+<span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MF.initialize()&quot;</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">customliveEvents</span><span class="p">,</span> <span class="nx">custombindEvents</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">setInitDefaults</span><span class="p">(){</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>overwriting the default namespaced bindevents and live events to confirm execution order</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">MF</span><span class="p">.</span><span class="nx">liveEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;first&#39;</span><span class="p">);</span> <span class="p">};</span>
+    <span class="nx">MF</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;second&#39;</span><span class="p">);</span> <span class="p">};</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">initTearDown</span><span class="p">(){</span>
+    <span class="nx">customliveEvents</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="nx">custombindEvents</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="nx">foo</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should support callback hoisting&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">customliveEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;first&#39;</span><span class="p">);</span> <span class="p">};</span>
+    <span class="nx">customliveEvents</span><span class="p">.</span><span class="nx">params</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">customliveEvents</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;hoisted&#39;</span><span class="p">);</span> <span class="p">};</span>
+
+    <span class="nx">MF</span><span class="p">.</span><span class="nx">initialize</span><span class="p">(</span> <span class="nx">customliveEvents</span> <span class="p">);</span>
+
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;hoisted&quot;</span><span class="p">,</span> <span class="s2">&quot;The &#39;hoisted&#39; callback is fired first&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;And is followed by the &#39;normal&#39; callback&quot;</span><span class="p">);</span>
+
+    <span class="nx">initTearDown</span><span class="p">();</span>
+
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should support greedy hoisting&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">&quot;hoisted&quot;</span><span class="p">);</span>
+      <span class="k">return</span> <span class="s2">&quot;hoisted&quot;</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">2</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">MF</span><span class="p">.</span><span class="nx">liveEvents</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="nx">params</span> <span class="p">),</span> <span class="s2">&quot;hoisted&quot;</span><span class="p">,</span> <span class="s2">&quot;overwriting via contextual `this` in liveEvents&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">MF</span><span class="p">.</span><span class="nx">bindEvents</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="nx">params</span> <span class="p">),</span> <span class="s2">&quot;hoisted&quot;</span><span class="p">,</span> <span class="s2">&quot;overwriting via contextual `this` in bindEvents&quot;</span><span class="p">);</span>
+
+    <span class="nx">initTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should use constructors to execute a callback chain&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">liveEvents</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">;</span>
+    <span class="nx">bindEvents</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>NB: Once we've reset the defaults, there's no going back.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">setInitDefaults</span><span class="p">();</span>
+
+    <span class="nx">MF</span><span class="p">.</span><span class="nx">initialize</span><span class="p">(</span><span class="nx">liveEvents</span><span class="p">,</span> <span class="nx">bindEvents</span><span class="p">);</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">4</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;default callback&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;passed callback&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="s2">&quot;default callback #2&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;passed callback #2&quot;</span><span class="p">);</span>
+
+    <span class="nx">initTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should know what to do with null arguments&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">bindEvents</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">;</span>
+
+    <span class="nx">MF</span><span class="p">.</span><span class="nx">initialize</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">bindEvents</span><span class="p">);</span>
+
+    <span class="nx">expect</span><span class="p">(</span> <span class="mi">3</span> <span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;will fire default callback&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="s2">&quot;will fire passed callback&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;will fire default callback #2&quot;</span><span class="p">);</span>
+
+    <span class="nx">initTearDown</span><span class="p">();</span>
+  <span class="p">});</span>
+
+  <span class="nx">test</span><span class="p">(</span><span class="s2">&quot;should fire defaults if you don&#39;t pass it anything&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">MF</span><span class="p">.</span><span class="nx">initialize</span><span class="p">();</span>
+
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;fires default callback #1&quot;</span><span class="p">);</span>
+    <span class="nx">equals</span><span class="p">(</span><span class="nx">foo</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span> <span class="s2">&quot;fires default callback #2&quot;</span><span class="p">);</span>
+  <span class="p">});</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

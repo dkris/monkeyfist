@@ -1,9 +1,9 @@
 <!DOCTYPE html>  <html> <head>   <title>monkeyfist.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               monkeyfist.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">$</span> <span class="p">)</span> <span class="p">{</span>
 
-  <span class="kd">var</span> <span class="nx">MF</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="nx">MF</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">MonkeyFist</span><span class="p">,</span> <span class="nx">MF</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="nx">MF</span><span class="p">()</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">slice</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">,</span>
 
-    <span class="nx">fn</span> <span class="o">=</span> <span class="nx">MF</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>MF.initialize()</h2>
+    <span class="nx">fn</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>MF.initialize()</h2>
 
 <p>Creates 2 callback functions: preReady &amp; onReady,
 which act as callback chains for passed in arguments with
@@ -19,8 +19,8 @@ arguments</p>             </td>             <td class="code">               <div
       <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>MF.constr()</h2>
 
 <p>Creates a constructor that returns a callback chain for
-with any functions passed as arguments. If the last argument
-passed is an object, constr() will pass that to each function.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">constr</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+with any functions passed as arguments. If any of the arguments have a params object, that 
+will passed to each function.</p>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">constr</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">args_orig</span> <span class="o">=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
 
         <span class="k">return</span> <span class="kd">function</span> <span class="nx">constr</span><span class="p">(){</span>
@@ -63,7 +63,7 @@ passed is an object, constr() will pass that to each function.</p>             <
     <span class="p">};</span>
 
     <span class="k">return</span> <span class="nx">fn</span><span class="p">;</span>
-  <span class="p">})();</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Attach MF object to window for later use</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nb">window</span><span class="p">.</span><span class="nx">MF</span> <span class="o">=</span> <span class="nx">MF</span><span class="p">;</span>
+  <span class="p">})();</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Attach MF object to window for later use</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nb">window</span><span class="p">.</span><span class="nx">MF</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">MonkeyFist</span> <span class="o">=</span> <span class="nx">MF</span><span class="p">;</span>
 <span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
 <span class="cm">/**</span>
 <span class="cm">  Copyright (C) 2011 by Samuel Breed and Quick Left</span>
