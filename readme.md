@@ -1,5 +1,42 @@
 ## MonkeyFist
 
+                                                                                                              
+                                                                                                              
+                                                                                                              
+                                                                                                              
+                                                                         `.::::/+/-....`                      
+                                                                     `--os+::/++hmNo::/++:.                   
+                                                                 `/+yo+/oyh+:smd-.---+so/smd+.`               
+                                                                -h/```:-``-:--sms+:+yshh:-/+s/o+`             
+                                                             .osoyss+-..:/``:.`.//.+y+/--/s+/s:/y/`           
+                                                           `oho/:``.+s:/omy:.:/` .. `/o/smy.`:y/-ds.          
+                                                           od/-.:o:` .-``:yooohy-`./` -/-h:`:+:/yyyo`         
+                                                         -/s:-/+o+dh+..o. `-..oho++hs. /mh//- `oh+oy.         
+                                                       `o/..-. `--`-os+hy:``+:`./-.+hs/+Nd/` `/sh. oo`        
+                                                      `o+/+-`.-. `:` ::./yy:/do .:. `:::No..-.`-+ .oso        
+                                                  ` `-.syosdy/+d+./o. /: .:--odo-.+- `ohm+-``.+h:.:.`h-       
+                 `   ` ``````````````...:---`-/:-..-/s--:d/-o+-yy+shy-`/- `-` `s//sm+:yh-....ody-  .s+s.      
+                .--/+:.+o:-+s+::/s+..-sho:.---so+:.` `.+dmo:. :+.:/-odo+y: `-` `:-`dmho:````.+/---/yd.ho`     
+         .`  ::``.-/ho.`-//``-:.``-/:+:`  ``````.../o:  :d- .-+o:. -o:.+dho:o+  :yss-..--./shy//:.:ys/ss`     
+      `  -+:` -/:` .+dd+` -o- `:o- `:o- `+ddhy+/:--+mmo`/+.:-`os` :o+`./-`hNNmyso//-```...oy-``./yh:.-yo`     
+     `::-`.+s-``-+:..omho. .//.-so/` `/+yh+sh:```.:s++:odd+` -y-.-.:hs.  .oNdo+/------:/os+-.:-.oh:./+::`     
+       .:/+/yyo:-/dho:.`:y.  -:. :my-  -yh: .//.    .:-yN/  .-+h: `/h/ `:--d-...` `-.-+y:` ``.:oh/--../-      
+            `   .-+yyh/-/ys+.`.ooysyy+. `/s/``../-.    :m::+-`so` --o:-:` oh` `-+ososys+//:/:-hh-..-+do       
+                   :hd+-` `..-//++..-+y+-:-:/+:-:oho+..+dds. :do::` /hy.`.-m+/+:+hy/-.     `:+so:::::y-       
+                    ``        ```   ``.``...````.....`.--y/ -/.ys` `.s. .``Nh+:....:-.///syo:.```.-oy.        
+                                                         oo:+``+: -:`/`.. :sy..-:-.--.:/oso-`.--:+hh-         
+                                                         .hd- -o:/o` sso -:.s/``-:hdds:--..````.:/:`          
+                                                          .o: :--d` `.+s -``/yd+:+so/-`..:/::sys-             
+                                                           `/oh- /:`. -y:+``:.sy/...-+o+/:--+/.               
+                                                             -++:ymo- .-ss`-: /`/hyyhy+/+-`                   
+                                                                .:+so+s-`shms`-y/:ohs:`                       
+                                                                     .:++ydyo/shhys.                          
+                                                                         ``                                   
+                                                                                                              
+                                                                                                              
+                                                                                                              
+                                                                                                              
+
 v0.01
 
 a jQuery micro-framework that allows for crazy monkey patching and
