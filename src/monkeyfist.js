@@ -1,9 +1,9 @@
 (function( $ ) {
 
-  var MF = (function MF() {
+  var MonkeyFist, MF = (function MF() {
     var slice = Array.prototype.slice,
 
-    fn = MF.prototype = {
+    fn = {
       // ##MF.initialize() 
       // Creates 2 callback functions: preReady & onReady,
       // which act as callback chains for passed in arguments with
@@ -68,7 +68,7 @@
   })();
 
   // Attach MF object to window for later use
-  window.MF = MF;
+  window.MF = window.MonkeyFist = MF;
 })(jQuery);
 /**
   Copyright (C) 2011 by Samuel Breed and Quick Left
