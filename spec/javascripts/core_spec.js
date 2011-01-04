@@ -11,6 +11,10 @@ describe('MF core', function () {
     expect(MF).toBe(window.MF);
   });
 
+  it("should be double namespaced", function() {
+    expect(MonkeyFist).toEqual(MF);
+  });
+
 });
 
 
@@ -47,7 +51,7 @@ describe("MF.constr()", function(){
     expect(foo[1]).toEqual(2);
   });
 
-  it("should let you keep feeding it, and feeding it", function(){
+  it("should continue taking arguments", function(){
     g = new MF.constr( arg, arg );
     g( arg, arg);
 
@@ -82,7 +86,7 @@ describe("MF.constr()", function(){
 
 });
 
-describe("MF.initializer()", function(){
+describe("MF.initialize()", function(){
 
   var customliveEvents, custombindEvents,
       i = 1,
@@ -95,8 +99,7 @@ describe("MF.initializer()", function(){
           foo.push( biz || i );
         }
         i += 1;
-      },
-      defaults_set = false;
+      };
 
   afterEach(function(){
     customliveEvents = null;
