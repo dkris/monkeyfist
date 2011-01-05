@@ -12,11 +12,11 @@
       initialize: function(preDom, postDom){
         var pre_params = (preDom && !!preDom.params) ? preDom.params: null,
             ready_params = (postDom && !!postDom.params) ? postDom.params: null,
-            preReady = new fn.constr( fn.liveEvents ),
-            onReady = new fn.constr ( fn.bindEvents );
+            preReady = fn.constr( fn.liveEvents ),
+            onReady = fn.constr ( fn.bindEvents );
 
-        preReady.apply( pre_params, [ preDom ] );
-        $( onReady.apply( ready_params, [ postDom ] ) );
+        preReady.call( pre_params, preDom );
+        $( onReady.call( ready_params, postDom ) );
       },
       // ##MF.constr()
       // Creates a constructor that returns a callback chain for
