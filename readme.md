@@ -39,7 +39,8 @@
 
 v0.01
 
-a jQuery micro-framework that allows for crazy monkey patching and
+a jQuery micro-framework that allows for crazy monkey patching (not
+really) and
 callback chaining.
 
 If you're sick and tired of having to use more than one doc ready when loading multiple scripts, MonkeyFist has an answer.
@@ -202,12 +203,27 @@ _and_ the additional callback:
     yourRadFunction(); anotherCoolFunction(); someOtherFunction();
 
 
-## And there's more on the way!
+#### And there's more on the way!
 
 ## Tests
 
-If you want to pull this down and run the tests, you'll need a version
-of ruby and rubygems that support [Bundler](http://gembundler.com/). I
+Tests for MonkeyFist come in two varieties:
+
+* [Qunit](http://docs.jquery.com/Qunit)
+* [Jasmine](https://github.com/pivotal/jasmine) (w/ some help from [Evergreen](https://github.com/jnicklas/evergreen))
+
+Both test suites have identical coverage.
+
+#### QUnit
+
+The QUnit tests live in the `/test` directory. Just open
+`/test/index.html` in a browser to watch them run.
+
+There are also some [JSLitmus](http://www.broofa.com/Tools/JSLitmus/) benchmarks.
+
+#### Jasmine & Evergreen
+
+To run the Jasmine tests, you'll need a version of Ruby and Rubygems that support [Bundler](http://gembundler.com/). I
 also highly recommend creating a gemset with [rvm](http://rvm.beginrescueend.com/) to isolate the dependencies from your global gemset.
 
 Once you've got that, just run
@@ -215,15 +231,11 @@ Once you've got that, just run
     gem install bundle
     bundle install
 
-to install all dependencies ([Jasmine](https://github.com/pivotal/jasmine), [evergreen](https://github.com/jnicklas/evergreen)).
+to install all dependencies ([Jasmine](https://github.com/pivotal/jasmine) and [evergreen](https://github.com/jnicklas/evergreen) both have a handful of dependencies).
 
-To run the test suite, use
+Then run the test suite with
 
     evergreen run
-
-If you're not into installing anything to see the tests run, there's a
-concurrent [Qunit](http://docs.jquery.com/Qunit) test suit in the tests directory. All you need for
-that is a web browser.
 
 ### License
 
