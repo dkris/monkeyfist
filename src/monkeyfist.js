@@ -6,9 +6,11 @@
         pre_params, ready_params,
 
     fn = {
-      // ###MF.initialize() 
-      // Creates 2 callback functions: preReady & onReady which act as callback chains for passed in arguments with
-      // over-rideable defaults.
+      // ###MF.initialize()
+      // Allows you to pass functions as pre-DOM and doc ready
+      // handlers, which are executed in callback chains along with the
+      // default handlers (See [bindEvents](#section-6) and
+      // [liveEvents](#section-5))
       //
       // Usage:
       //
@@ -21,6 +23,13 @@
       //      }
       //
       //      MF.initialize( preDom, postDom);
+      //
+      // That will execute the following
+      //
+      // 1. Default pre-DOM handler ( `MF.liveEvents()` )
+      // 2. Custom pre-DOM handler ( `preDom()` )
+      // 3. Default doc ready handler ( `MF.bindEvents()` )
+      // 4. Custom doc ready handler ( `postDom()` )
 
 
       initialize: function(preDom, postDom){
@@ -100,7 +109,7 @@
           params = this;
         }
 
-        if( $.isPlainObject(params) && $.isFunction( params.hoist ) ){
+        if( !!params && $.isFunction( params.hoist ) ){
           if( !!params.greedy ) {
             return params.hoist();
           } else {
@@ -115,8 +124,8 @@
     };
 
     // ###MF.liveEvents()
-    // This is the generic preDom handler. This is meant to house your own custom code, or
-    // to be overwritten with `MF.helper.monkey()`
+    // This is the generic preDom handler and is executed as soon as `MF.initialize()` is called. 
+    // This is meant to house your own custom code, or to be overwritten with `MF.helper.monkey()`
     fn.liveEvents = function(){
       var params = this;
       if( $.isPlainObject(params) && $.isFunction( params.hoist ) ){
@@ -130,8 +139,8 @@
     };
 
     // ###MF.bindEvents()
-    // This is the generic postDom (doc ready) handler. This is meant to house your own custom code, or
-    // to be overwritten with `MF.helper.monkey()`
+    // This is the generic postDom (doc ready) handler, and fires on document ready. 
+    // This is meant to house your own custom code, or to be overwritten with `MF.helper.monkey()`
     fn.bindEvents = function(){
       var params = this;
       if( $.isPlainObject(params) && $.isFunction( params.hoist ) ){

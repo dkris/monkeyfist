@@ -6,8 +6,10 @@ See <a href="https://github.com/quickleft/monkeyfist">github</a> for the full re
 
     <span class="nx">fn</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>MF.initialize()</h3>
 
-<p>Creates 2 callback functions: preReady &amp; onReady which act as callback chains for passed in arguments with
-over-rideable defaults.</p>
+<p>Allows you to pass functions as pre-DOM and doc ready
+handlers, which are executed in callback chains along with the
+default handlers (See <a href="#section-6">bindEvents</a> and
+<a href="#section-5">liveEvents</a>)</p>
 
 <p>Usage:</p>
 
@@ -20,7 +22,16 @@ over-rideable defaults.</p>
  }
 
  MF.initialize( preDom, postDom);
-</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">preDom</span><span class="p">,</span> <span class="nx">postDom</span><span class="p">){</span>
+</code></pre>
+
+<p>That will execute the following</p>
+
+<ol>
+<li>Default pre-DOM handler ( <code>MF.liveEvents()</code> )</li>
+<li>Custom pre-DOM handler ( <code>preDom()</code> )</li>
+<li>Default doc ready handler ( <code>MF.bindEvents()</code> )</li>
+<li>Custom doc ready handler ( <code>postDom()</code> )</li>
+</ol>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">preDom</span><span class="p">,</span> <span class="nx">postDom</span><span class="p">){</span>
         <span class="kd">var</span> <span class="nx">preReady</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">liveEvents</span> <span class="p">),</span>
             <span class="nx">onReady</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">constr</span> <span class="p">(</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="p">);</span>
 
@@ -80,7 +91,8 @@ It does this by relying on the cached values for preDom and postDom params and r
  });
 </code></pre>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">helper</span> <span class="o">=</span> <span class="p">{};</span>
     <span class="nx">fn</span><span class="p">.</span><span class="nx">helper</span><span class="p">.</span><span class="nx">monkey</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">c</span> <span class="p">){</span>
-      <span class="kd">var</span> <span class="nx">params</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">params</span><span class="p">,</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">)</span> <span class="o">?</span> <span class="nx">type</span> <span class="o">:</span> <span class="nx">c</span><span class="p">;</span>
 
       <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
 
@@ -96,7 +108,7 @@ It does this by relying on the cached values for preDom and postDom params and r
           <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
           <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
           <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -104,14 +116,14 @@ It does this by relying on the cached values for preDom and postDom params and r
           <span class="p">}</span>
         <span class="p">}</span>
 
-        <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">c</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="nx">c</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">callback</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
         <span class="p">}</span>
       <span class="p">};</span>
     <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>MF.liveEvents()</h3>
 
-<p>This is the generic preDom handler. This is meant to house your own custom code, or
-to be overwritten with <code>MF.helper.monkey()</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">liveEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<p>This is the generic preDom handler and is executed as soon as <code>MF.initialize()</code> is called. 
+This is meant to house your own custom code, or to be overwritten with <code>MF.helper.monkey()</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">liveEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
       <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
       <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
         <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="p">)</span> <span class="p">{</span>
@@ -123,8 +135,8 @@ to be overwritten with <code>MF.helper.monkey()</code></p>             </td>    
       <span class="cm">/** Your custom code lives here :) */</span>
     <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>MF.bindEvents()</h3>
 
-<p>This is the generic postDom (doc ready) handler. This is meant to house your own custom code, or
-to be overwritten with <code>MF.helper.monkey()</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<p>This is the generic postDom (doc ready) handler, and fires on document ready. 
+This is meant to house your own custom code, or to be overwritten with <code>MF.helper.monkey()</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
       <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
       <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
         <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="p">)</span> <span class="p">{</span>
