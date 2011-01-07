@@ -1,27 +1,59 @@
+// MonkeyFist provides pre-Dom and doc-Ready callback initialization with a myriad of options.
+// See [github](https://github.com/quickleft/monkeyfist) for the full readme.
 (function( $ ) {
-
   var MonkeyFist, MF = (function MF() {
     var slice = Array.prototype.slice,
+        pre_params, ready_params,
 
     fn = {
-      // ##MF.initialize() 
-      // Creates 2 callback functions: preReady & onReady,
-      // which act as callback chains for passed in arguments with
-      // over-rideable defaults. Uses `apply()` to pass additional
-      // arguments
+      // ###MF.initialize() 
+      // Creates 2 callback functions: preReady & onReady which act as callback chains for passed in arguments with
+      // over-rideable defaults.
+      //
+      // Usage:
+      //
+      //      function preDom(){
+      //        // This fires as soon as it's loaded, but after the default preDom handler
+      //      }
+      //
+      //      function postDom(){
+      //        // This fires on document ready, after the postDom handler
+      //      }
+      //
+      //      MF.initialize( preDom, postDom);
+
+
       initialize: function(preDom, postDom){
-        var pre_params = (preDom && !!preDom.params) ? preDom.params: null,
-            ready_params = (postDom && !!postDom.params) ? postDom.params: null,
-            preReady = fn.constr( fn.liveEvents ),
+        var preReady = fn.constr( fn.liveEvents ),
             onReady = fn.constr ( fn.bindEvents );
+
+            pre_params = (preDom && !!preDom.params) ? preDom.params: null;
+            ready_params = (postDom && !!postDom.params) ? postDom.params: null;
 
         preReady.call( pre_params, preDom );
         $( onReady.call( ready_params, postDom ) );
       },
-      // ##MF.constr()
-      // Creates a constructor that returns a callback chain for
-      // with any functions passed as arguments. If any of the arguments have a params object, that 
-      // will passed to each function.
+
+      // ###MF.constr()
+      // This is a factory for creating callback chains. It works by storing any arguments initially passed 
+      // to it ad returning a function that calls them and any additional arguments passed to it.
+      //
+      // Usage:
+      //
+      // It will store the original argument.
+      //
+      //      var x = MF.constr( fn );
+      //
+      // And then execute additional arguments passed at run time:
+      //
+      //      x( fn1, fn2 );
+      //
+      // That will execute
+      //
+      // 1. `fn();`
+      // 2. `fn2();`
+      // 3. `fn3();`
+
       constr: function() {
         var args_orig = slice.call(arguments);
 
@@ -40,6 +72,51 @@
       }
     };
 
+    // ### MF.helper.monkey();
+    // Helper monkey builds functions that support callback hoisting from within Initialize().
+    // It does this by relying on the cached values for preDom and postDom params and returning a "hoisted" function.
+    //
+    // Usage:
+    //
+    //      MF.helper.monkey('preDom', function(){
+    //        // this is now the default preDom handler
+    //      });
+    fn.helper = {};
+    fn.helper.monkey = function( type, c ){
+      var params,
+      callback = ( $.isFunction(type) ) ? type : c;
+
+      return function(){
+
+        if( !!pre_params && type.match(/predom/i )){
+          params = pre_params;
+        }
+
+        if( !!ready_params && type.match(/domready/i )){
+          params = ready_params;
+        }
+
+        if( $.isPlainObject( this ) ) {
+          params = this;
+        }
+
+        if( $.isPlainObject(params) && $.isFunction( params.hoist ) ){
+          if( !!params.greedy ) {
+            return params.hoist();
+          } else {
+            params.hoist();
+          }
+        }
+
+        if( $.isFunction( callback ) ) {
+          return callback();
+        }
+      };
+    };
+
+    // ###MF.liveEvents()
+    // This is the generic preDom handler. This is meant to house your own custom code, or
+    // to be overwritten with `MF.helper.monkey()`
     fn.liveEvents = function(){
       var params = this;
       if( $.isPlainObject(params) && $.isFunction( params.hoist ) ){
@@ -52,6 +129,9 @@
       /** Your custom code lives here :) */
     };
 
+    // ###MF.bindEvents()
+    // This is the generic postDom (doc ready) handler. This is meant to house your own custom code, or
+    // to be overwritten with `MF.helper.monkey()`
     fn.bindEvents = function(){
       var params = this;
       if( $.isPlainObject(params) && $.isFunction( params.hoist ) ){
@@ -61,13 +141,14 @@
           params.hoist();
         }
       }
+
       /** Your custom code lives here :) */
     };
 
     return fn;
   })();
 
-  // Attach MF object to window for later use
+  // Globally persist with MF or MonkeyFist
   window.MF = window.MonkeyFist = MF;
 })(jQuery);
 /**

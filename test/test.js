@@ -6,7 +6,6 @@ test("Basic requirements", function() {
   ok( MonkeyFist, "MonkeyFist");
 });
 
-
 // Confirm that MF is a global and contains all the right stuff
 test("MF core", function() {
   expect( 4 );
@@ -202,5 +201,94 @@ module("MF.initialize()");
 
     equals(foo[0], "first", "fires default callback #1");
     equals(foo[1], "second", "fires default callback #2");
+    initTearDown();
+  });
+
+module('MF.helper.monkey()');
+
+  function helperMonkeyTearDown(){
+      foo = [];
+  }
+
+  test("should create a function", function(){
+    var m = MF.helper.monkey( arg );
+
+    expect( 2 );
+    equals( typeof m, "function", "returns a function");
+
+    m();
+
+    equals( foo[0], 1, "executes second argument");
+    helperMonkeyTearDown();
+  });
+
+  test("should allow callback hoisting", function(){
+    expect( 4 );
+
+    function a(){
+      foo.push('normal callback');
+    }
+
+    var params = {
+      hoist: function(){ foo.push('hoisted callback'); }
+    },
+
+    aa = MF.helper.monkey( a );
+
+    aa.call(params);
+
+    equals( foo[0], "hoisted callback", "hoisted is fired first");
+    equals( foo[1], "normal callback", "followed by the regular function");
+
+    foo = [];
+
+    params.greedy = true;
+
+    aa.call(params);
+
+    equals( foo[0], "hoisted callback", "hoisted is fired first");
+    equals( foo[1], undefined, "and the regular callback never fires");
+
+    helperMonkeyTearDown();
+  });
+
+  xtest("should work as a method override for liveEvents & bindEvents", function(){
+    var tmpMF = {};
+
+    $.extend(tmpMF, MF);
+
+    MF.liveEvents = MF.helper.monkey('predom', function onReady(){
+      foo.push('preDom');
+    });
+
+    function preReady(){
+      foo.push('passed liveEvents');
+    }
+
+    preReady.params = {
+      hoist: function(){ foo.push('liveEvents hoist'); }
+    };
+
+    MF.bindEvents = MF.helper.monkey('domReady', function onReady(){
+      foo.push('domReady');
+    });
+
+    function onReady(){
+      foo.push('passed onready');
+    }
+    onReady.params = {
+      hoist: function(){ foo.push('onready hosited'); }
+    };
+
+    bar = ["liveEvents hoist", "preDom", "passed liveEvents", "onready hoisted", "domReady", "passed onready"];
+
+    MF.initialize(preReady, onReady);
+
+    expect(1);
+    deepEqual(foo, bar, "execution order is correct");
+
+    foo = [];
+    MF = tmpMF;
+
   });
 
