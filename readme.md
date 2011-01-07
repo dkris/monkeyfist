@@ -39,26 +39,28 @@
 
 v0.01
 
-a jQuery micro-framework that allows for crazy monkey patching (not
-really) and
-callback chaining.
+a jQuery micro-framework
 
-If you're sick and tired of having to use more than one doc ready when loading multiple scripts, MonkeyFist has an answer.
+If you're sick and tired of having to use more than one doc ready when loading multiple scripts in a large site, MonkeyFist has an answer.
 
 ## Usage
+There are two ways to setup the default handlers for pre-doc ready and
+doc ready. The preferred method is to override the MonkeyFist default handlers. If
+you want to preserve callback hoisting, define your overrides with
+`MF.helper.monkey` like this:
 
-Define the jqueries that you want fired on every page (or not) in
-fn.liveEvents and fn.bindEvents in monkeyfist.js. There's super
-voodoo-juju at the tops of those functions, so be sure to declare your
-custom functionality after the comments. These will be your defaults
-that get called on doc ready everytime you call MF.initialize() (or
-not).
+    MF.liveEvents = MF.helper.monkey('preDom', function(){
+      // your code goes here
+    });
 
-At some later point in time, in some other file, all you need to do to
-add onto your global defaults is declare some named functions, and pass
-them into MF.initialize() like so:
+    MF.bindEvents = MF.helper.monkey('postDom', function(){
+      // your code goes here
+    });
 
-    monkeyfist.js:
+The other method is to add your own code into
+the MonkeyFist default handlers:
+
+    in monkeyfist.js:
 
     fn.bindEvents = function(){
       var params = this;
@@ -69,7 +71,9 @@ them into MF.initialize() like so:
           params.hoist();
         }
       }
-      /** Your custom code lives here :) */
+      /** Your custom code lives here */
+
+      // code that can be run as soon as it's loaded
     };
 
     fn.liveEvents = function(){
@@ -81,10 +85,17 @@ them into MF.initialize() like so:
           params.hoist();
         }
       }
-      /** Your custom code lives here :) */
+      /** Your custom code lives here */
+
+      // some code that needs to wait for doc ready
     };
 
-    ...
+
+Now, if all you want to do is execute the default functions, just call
+`MF.initialize()` without any arguments.
+
+Extending these defaults in another file is as easy as passing
+functions into `MF.initialize()`
 
     someOtherFile.js:
 
@@ -202,6 +213,34 @@ _and_ the additional callback:
 
     yourRadFunction(); anotherCoolFunction(); someOtherFunction();
 
+## Callback hoisting with `MF.helper.monkey()`
+
+Similar to `MF.constr()`, `MF.helper.monkey()` can be easily anywhere
+else in your code to create a "hoisted callbacK" paradigm. Hoisting
+callbacks means that you can pass any function a params object with
+`.call()` or `.apply()`, and the contents of that object with either
+execute _before_ or _instead of_ the contents of that function.
+
+Here's an example:
+
+    var foo = MF.helper.monkey(function(){
+      // default code
+    }),
+    params = {
+      hoist: function(){
+        // even awesome-er code
+      }
+    };
+
+    foo.call(params);
+
+That will make this happen:
+
+1. awesome-er code
+2. default code
+
+And 'greedy' hoisting works too, as demonstrated in the examples above.
+TODO: support for arguments
 
 #### And there's more on the way!
 
