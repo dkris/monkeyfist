@@ -1,0 +1,177 @@
+<!DOCTYPE html>  <html> <head>   <title>monkeyfist.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               monkeyfist.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>MonkeyFist provides pre-Dom and doc-Ready callback initialization with a myriad of options.
+See <a href="https://github.com/quickleft/monkeyfist">github</a> for the full readme.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">$</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">MonkeyFist</span><span class="p">,</span> <span class="nx">MF</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="nx">MF</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">slice</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">,</span>
+        <span class="nx">pre_params</span><span class="p">,</span> <span class="nx">ready_params</span><span class="p">,</span>
+
+    <span class="nx">fn</span> <span class="o">=</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>MF.initialize()</h3>
+
+<p>Allows you to pass functions as pre-DOM and doc ready
+handlers, which are executed in callback chains along with the
+default handlers (See <a href="#section-6">bindEvents</a> and
+<a href="#section-5">liveEvents</a>)</p>
+
+<p>Usage:</p>
+
+<pre><code> function preDom(){
+   // This fires as soon as it's loaded, but after the default preDom handler
+ }
+
+ function postDom(){
+   // This fires on document ready, after the postDom handler
+ }
+
+ MF.initialize( preDom, postDom);
+</code></pre>
+
+<p>That will execute the following</p>
+
+<ol>
+<li>Default pre-DOM handler ( <code>MF.liveEvents()</code> )</li>
+<li>Custom pre-DOM handler ( <code>preDom()</code> )</li>
+<li>Default doc ready handler ( <code>MF.bindEvents()</code> )</li>
+<li>Custom doc ready handler ( <code>postDom()</code> )</li>
+</ol>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">preDom</span><span class="p">,</span> <span class="nx">postDom</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">preReady</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">constr</span><span class="p">(</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">liveEvents</span> <span class="p">),</span>
+            <span class="nx">onReady</span> <span class="o">=</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">constr</span> <span class="p">(</span> <span class="nx">fn</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="p">);</span>
+
+            <span class="nx">pre_params</span> <span class="o">=</span> <span class="p">(</span><span class="nx">preDom</span> <span class="o">&amp;&amp;</span> <span class="o">!!</span><span class="nx">preDom</span><span class="p">.</span><span class="nx">params</span><span class="p">)</span> <span class="o">?</span> <span class="nx">preDom</span><span class="p">.</span><span class="nx">params</span><span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="nx">ready_params</span> <span class="o">=</span> <span class="p">(</span><span class="nx">postDom</span> <span class="o">&amp;&amp;</span> <span class="o">!!</span><span class="nx">postDom</span><span class="p">.</span><span class="nx">params</span><span class="p">)</span> <span class="o">?</span> <span class="nx">postDom</span><span class="p">.</span><span class="nx">params</span><span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+
+        <span class="nx">preReady</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="nx">pre_params</span><span class="p">,</span> <span class="nx">preDom</span> <span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span> <span class="nx">onReady</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="nx">ready_params</span><span class="p">,</span> <span class="nx">postDom</span> <span class="p">)</span> <span class="p">);</span>
+      <span class="p">},</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>MF.constr()</h3>
+
+<p>This is a factory for creating callback chains. It works by storing any arguments initially passed 
+to it ad returning a function that calls them and any additional arguments passed to it.</p>
+
+<p>Usage:</p>
+
+<p>It will store the original argument.</p>
+
+<pre><code> var x = MF.constr( fn );
+</code></pre>
+
+<p>And then execute additional arguments passed at run time:</p>
+
+<pre><code> x( fn1, fn2 );
+</code></pre>
+
+<p>That will execute</p>
+
+<ol>
+<li><code>fn();</code></li>
+<li><code>fn2();</code></li>
+<li><code>fn3();</code></li>
+</ol>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">constr</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">args_orig</span> <span class="o">=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="kd">function</span> <span class="nx">constr</span><span class="p">(){</span>
+          <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">args_orig</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)),</span>
+              <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nx">a</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+              <span class="nx">params</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">?</span> <span class="k">this</span><span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+
+          <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">};</span>
+      <span class="p">}</span>
+    <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>MF.helper.monkey();</h3>
+
+<p>Helper monkey builds functions that support callback hoisting from within Initialize().
+It does this by relying on the cached values for preDom and postDom params and returning a "hoisted" function.</p>
+
+<p>Usage:</p>
+
+<pre><code> MF.helper.monkey('preDom', function(){
+   // this is now the default preDom handler
+ });
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">helper</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="nx">fn</span><span class="p">.</span><span class="nx">helper</span><span class="p">.</span><span class="nx">monkey</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">c</span> <span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">params</span><span class="p">,</span>
+      <span class="nx">callback</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">)</span> <span class="o">?</span> <span class="nx">type</span> <span class="o">:</span> <span class="nx">c</span><span class="p">;</span>
+
+      <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">pre_params</span> <span class="o">&amp;&amp;</span> <span class="nx">type</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/predom/i</span> <span class="p">)){</span>
+          <span class="nx">params</span> <span class="o">=</span> <span class="nx">pre_params</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">ready_params</span> <span class="o">&amp;&amp;</span> <span class="nx">type</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/domready/i</span> <span class="p">)){</span>
+          <span class="nx">params</span> <span class="o">=</span> <span class="nx">ready_params</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
+          <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">callback</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">callback</span><span class="p">();</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+    <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>MF.liveEvents()</h3>
+
+<p>This is the generic preDom handler and is executed as soon as <code>MF.initialize()</code> is called. 
+This is meant to house your own custom code, or to be overwritten with <code>MF.helper.monkey()</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">liveEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="cm">/** Your custom code lives here :) */</span>
+    <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>MF.bindEvents()</h3>
+
+<p>This is the generic postDom (doc ready) handler, and fires on document ready. 
+This is meant to house your own custom code, or to be overwritten with <code>MF.helper.monkey()</code></p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">fn</span><span class="p">.</span><span class="nx">bindEvents</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isPlainObject</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span> <span class="p">)</span> <span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">!!</span><span class="nx">params</span><span class="p">.</span><span class="nx">greedy</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">params</span><span class="p">.</span><span class="nx">hoist</span><span class="p">();</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="cm">/** Your custom code lives here :) */</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="nx">fn</span><span class="p">;</span>
+  <span class="p">})();</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Globally persist with MF or MonkeyFist</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nb">window</span><span class="p">.</span><span class="nx">MF</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">MonkeyFist</span> <span class="o">=</span> <span class="nx">MF</span><span class="p">;</span>
+<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+<span class="cm">/**</span>
+<span class="cm">  Copyright (C) 2011 by Samuel Breed and Quick Left</span>
+
+<span class="cm">  Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="cm">  of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="cm">  in the Software without restriction, including without limitation the rights</span>
+<span class="cm">  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="cm">  copies of the Software, and to permit persons to whom the Software is</span>
+<span class="cm">  furnished to do so, subject to the following conditions:</span>
+
+<span class="cm">  The above copyright notice and this permission notice shall be included in</span>
+<span class="cm">  all copies or substantial portions of the Software.</span>
+
+<span class="cm">  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="cm">  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="cm">  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="cm">  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="cm">  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="cm">  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN</span>
+<span class="cm">  THE SOFTWARE.</span>
+<span class="cm">*/</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
