@@ -1,3 +1,0 @@
-Evergreen.configure do |config|
-  config.public_dir = 'src'
-end
