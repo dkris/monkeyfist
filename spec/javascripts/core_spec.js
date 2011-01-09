@@ -174,3 +174,64 @@ describe("MF.initialize()", function(){
 
 });
 
+
+describe('MF.helper.monkey()', function(){
+
+  var m,
+      i = 0,
+      // Foo will keep track of callback execution
+      foo = [],
+      // This is a basic function to be used as an argument in MF.constr()
+      arg = function(){
+        if( this.bar ) {
+          foo.push("bar");
+        } else {
+          foo.push(i += 1);
+        }
+      };
+
+  afterEach(function(){
+    foo = [];
+  });
+
+  it("should create a function", function(){
+    var m = MF.helper.monkey( arg );
+
+    expect( typeof m ).toEqual("function");
+
+    m();
+
+    expect( foo[0]).toEqual(1);
+  });
+
+  it("should allow callback hoisting", function(){
+
+    function a(){
+      foo.push('normal callback');
+    }
+
+    var params = {
+      hoist: function(){ foo.push('hoisted callback'); }
+    },
+
+    aa = MF.helper.monkey( a );
+
+    aa.call(params);
+
+    expect( foo[0]).toEqual("hoisted callback");
+    expect( foo[1]).toEqual("normal callback");
+
+    foo = [];
+
+    params.greedy = true;
+
+    aa.call(params);
+
+    expect( foo[0]).toEqual( "hoisted callback" );
+    expect( foo[1]).toEqual( undefined );
+
+  });
+
+
+
+});
