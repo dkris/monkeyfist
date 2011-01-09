@@ -1,5 +1,4 @@
 # MonkeyFist
-
                                                                                                               
                                                                                                               
                                                                                                               
@@ -40,6 +39,8 @@
 v0.01
 
 a jQuery micro-framework
+
+[http://quickleft.github.com/monkeyfist/](http://quickleft.github.com/monkeyfist/)
 
 If you're sick and tired of having to use more than one doc ready when loading multiple scripts in a large site, MonkeyFist has an answer.
 
