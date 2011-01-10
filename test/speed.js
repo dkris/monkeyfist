@@ -37,4 +37,14 @@
     MF.initialize( fn, fn2 );
   });
 
+  JSLitmus.test('MF.helper.monkey(): create', function(){
+    MF.helper.monkey(fn);
+  });
+
+  x = MF.helper.monkey(fn);
+
+  JSLitmus.test('MF.helper.monkey(): execute', function(){
+    x();
+  });
+
 })();

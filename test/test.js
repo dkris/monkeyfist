@@ -1,3 +1,7 @@
+function xtest(){
+  return false;
+}
+
 // Make sure that jQuery and our 2 MF namespaces exist
 test("Basic requirements", function() {
   expect(3);
@@ -252,43 +256,5 @@ module('MF.helper.monkey()');
     helperMonkeyTearDown();
   });
 
-  xtest("should work as a method override for liveEvents & bindEvents", function(){
-    var tmpMF = {};
-
-    $.extend(tmpMF, MF);
-
-    MF.liveEvents = MF.helper.monkey('predom', function onReady(){
-      foo.push('preDom');
-    });
-
-    function preReady(){
-      foo.push('passed liveEvents');
-    }
-
-    preReady.params = {
-      hoist: function(){ foo.push('liveEvents hoist'); }
-    };
-
-    MF.bindEvents = MF.helper.monkey('domReady', function onReady(){
-      foo.push('domReady');
-    });
-
-    function onReady(){
-      foo.push('passed onready');
-    }
-    onReady.params = {
-      hoist: function(){ foo.push('onready hosited'); }
-    };
-
-    bar = ["liveEvents hoist", "preDom", "passed liveEvents", "onready hoisted", "domReady", "passed onready"];
-
-    MF.initialize(preReady, onReady);
-
-    expect(1);
-    deepEqual(foo, bar, "execution order is correct");
-
-    foo = [];
-    MF = tmpMF;
-
-  });
+  
 
