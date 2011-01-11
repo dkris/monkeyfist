@@ -15,11 +15,13 @@
       // Usage:
       //
       //      function preDom(){
-      //        // This fires as soon as it's loaded, but after the default preDom handler
+      //        // This fires as soon as it's loaded,
+      //        // but after the default preDom handler
       //      }
       //
       //      function postDom(){
-      //        // This fires on document ready, after the postDom handler
+      //        // This fires on document ready
+      //        // after the postDom handler
       //      }
       //
       //      MF.initialize( preDom, postDom);
