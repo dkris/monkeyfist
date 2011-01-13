@@ -42,7 +42,7 @@
             ready_params = (postDom && !!postDom.params) ? postDom.params: null;
 
         preReady.call( pre_params, preDom );
-        $( onReady.call( ready_params, postDom ) );
+        $( function() { onReady.call( ready_params, postDom ); } );
       },
 
       // ###MF.constr()
